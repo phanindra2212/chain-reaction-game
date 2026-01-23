@@ -90,14 +90,3 @@ export class RoomManager {
     return roomId;
   }
 }
-
-// Extend GameEngine to support loading game state
-declare module './GameEngine' {
-  interface GameEngine {
-    loadGameState(gameState: GameState): void;
-  }
-}
-
-GameEngine.prototype.loadGameState = function(gameState: GameState): void {
-  this.gameState = JSON.parse(JSON.stringify(gameState));
-};

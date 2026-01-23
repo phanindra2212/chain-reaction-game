@@ -109,7 +109,7 @@ export const Lobby: React.FC<LobbyProps> = ({ onJoinRoom, onCreateRoom }) => {
                 Board Size:
               </label>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
-                {BOARD_SIZES.map((size) => (
+                {BOARD_SIZES.map((size: any) => (
                   <button
                     key={size.name}
                     type="button"

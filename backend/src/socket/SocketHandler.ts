@@ -72,7 +72,7 @@ export class SocketHandler {
       // Notify other players
       socket.to(room.id).emit('player-joined', { player: gameState.players[gameState.players.length - 1] });
     } catch (error) {
-      callback({ success: false, error: error.message });
+      callback({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 
@@ -109,7 +109,7 @@ export class SocketHandler {
       socket.to(roomId).emit('player-joined', { player: gameState.players.find(p => p.id === socket.id) });
       socket.to(roomId).emit('game-state-updated', { gameState });
     } catch (error) {
-      callback({ success: false, error: error.message });
+      callback({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 
@@ -157,7 +157,7 @@ export class SocketHandler {
       // Notify all players
       this.io.to(roomId).emit('game-started', { gameState });
     } catch (error) {
-      callback({ success: false, error: error.message });
+      callback({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 
@@ -203,7 +203,7 @@ export class SocketHandler {
         this.io.to(roomId).emit('game-ended', { winner: gameState.winner });
       }
     } catch (error) {
-      callback({ success: false, error: error.message });
+      callback({ success: false, error: error instanceof Error ? error.message : 'Unknown error' });
     }
   }
 

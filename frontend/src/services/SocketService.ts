@@ -8,7 +8,7 @@ export class SocketService {
   public connect(): void {
     const serverUrl = process.env.REACT_APP_SERVER_URL || 'http://localhost:3001';
     this.socket = io(serverUrl);
-    this.playerId = this.socket.id;
+    this.playerId = this.socket.id || '';
   }
 
   public disconnect(): void {

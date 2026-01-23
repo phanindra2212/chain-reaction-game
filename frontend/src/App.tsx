@@ -45,7 +45,7 @@ const App: React.FC = () => {
       if (response.success) {
         setGameState(response.gameState);
         setRoomId(response.room.id);
-        setCurrentPlayer(response.gameState.players.find(p => p.id === socketService.getPlayerId()) || null);
+        setCurrentPlayer(response.gameState.players.find((p: any) => p.id === socketService.getPlayerId()) || null);
       }
     });
   };
@@ -55,7 +55,7 @@ const App: React.FC = () => {
       if (response.success) {
         setGameState(response.gameState);
         setRoomId(response.room.id);
-        setCurrentPlayer(response.gameState.players.find(p => p.id === socketService.getPlayerId()) || null);
+        setCurrentPlayer(response.gameState.players.find((p: any) => p.id === socketService.getPlayerId()) || null);
       }
     });
   };

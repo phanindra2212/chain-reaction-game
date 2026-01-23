@@ -4,6 +4,10 @@ import { GAME_CONFIG } from '@chain-reaction/shared';
 export class GameEngine {
   private gameState: GameState;
 
+  public loadGameState(gameState: GameState): void {
+    this.gameState = JSON.parse(JSON.stringify(gameState));
+  }
+
   constructor(roomId: string, boardSize: { rows: number; cols: number }) {
     this.gameState = this.createInitialGameState(roomId, boardSize);
   }

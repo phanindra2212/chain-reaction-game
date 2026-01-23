@@ -2,8 +2,18 @@
 
 ## 🚀 Quick Deploy to Render
 
+### Option 1: Using render.yaml (Easiest)
+
+1. **Push your code to GitHub** (including the `render.yaml` file)
+2. **Go to [Render.com](https://render.com)**
+3. **Click "New" → "Blueprint"**
+4. **Connect your GitHub repository**
+5. **Render will automatically detect and deploy both services**
+
+### Option 2: Manual Deployment
+
 ### Prerequisites
-- GitHub account with the repository pushed
+- GitHub account with repository pushed
 - Render account (free tier available)
 
 ### Step 1: Deploy Backend

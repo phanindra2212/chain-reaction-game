@@ -23,7 +23,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   const [animatingReactions, setAnimatingReactions] = useState<ChainReaction[]>([]);
   const [showChat, setShowChat] = useState(false);
   const [showVoice, setShowVoice] = useState(false);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     socketService.on('move-made', (data: { reactions: ChainReaction[] }) => {
@@ -41,20 +41,20 @@ export const GameBoard: React.FC<GameBoardProps> = ({
   }, [socketService]);
 
   const handleCellClick = (row: number, col: number) => {
-    if (!gameState.isGameOver && currentPlayer && gameState.currentPlayerIndex === gameState.players.findIndex(p => p.id === currentPlayer.id)) {
+    if (!gameState.isGameOver && currentPlayer && gameState.currentPlayerIndex === gameState.players.findIndex((p: any) => p.id === currentPlayer.id)) {
       onMakeMove({ row, col });
     }
   };
 
   const getCellColor = (cell: any) => {
     if (!cell.playerId) return 'rgba(255, 255, 255, 0.1)';
-    const player = gameState.players.find(p => p.id === cell.playerId);
+    const player = gameState.players.find((p: any) => p.id === cell.playerId);
     return player ? player.color : 'rgba(255, 255, 255, 0.1)';
   };
 
   const isCellClickable = (row: number, col: number) => {
     if (!currentPlayer || gameState.isGameOver) return false;
-    const isCurrentPlayerTurn = gameState.currentPlayerIndex === gameState.players.findIndex(p => p.id === currentPlayer.id);
+    const isCurrentPlayerTurn = gameState.currentPlayerIndex === gameState.players.findIndex((p: any) => p.id === currentPlayer.id);
     if (!isCurrentPlayerTurn) return false;
     
     const cell = gameState.board[row][col];
@@ -139,7 +139,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <p style={{ color: 'rgba(255, 255, 255, 0.8)', margin: 0 }}>
-                Players: {gameState.players.filter(p => p.isActive).length} / {gameState.players.length}
+                Players: {gameState.players.filter((p: any) => p.isActive).length} / {gameState.players.length}
               </p>
               {gameState.isGameOver && (
                 <p style={{ color: '#4ECDC4', margin: '0.5rem 0', fontWeight: 'bold' }}>
@@ -148,7 +148,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
               )}
             </div>
             
-            {!gameState.isGameOver && gameState.players.filter(p => p.isActive)..length >= 2 && !gameState.board.some(row => row.some(cell => cell.dots > 0)) && (
+            {!gameState.isGameOver && gameState.players.filter((p: any) => p.isActive).length >= 2 && !gameState.board.some((row: any) => row.some((cell: any) => cell.dots > 0)) && (
               <button className="btn" onClick={onStartGame}>
                 Start Game
               </button>
@@ -165,8 +165,8 @@ export const GameBoard: React.FC<GameBoardProps> = ({
             backgroundColor: 'rgba(0, 0, 0, 0.2)',
             borderRadius: '8px'
           }}>
-            {gameState.board.map((row, rowIndex) =>
-              row.map((cell, colIndex) => (
+            {gameState.board.map((row: any, rowIndex: number) =>
+              row.map((cell: any, colIndex: number) => (
                 <div
                   key={`${rowIndex}-${colIndex}`}
                   onClick={() => handleCellClick(rowIndex, colIndex)}
@@ -201,7 +201,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         <div className="card" style={{ marginBottom: '1rem' }}>
           <h3 style={{ color: 'white', marginBottom: '1rem' }}>Players</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            {gameState.players.map((player, index) => (
+            {gameState.players.map((player: any, index: number) => (
               <div
                 key={player.id}
                 style={{
@@ -246,7 +246,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes explode {
           0% { transform: scale(1); }
           50% { transform: scale(1.3); }

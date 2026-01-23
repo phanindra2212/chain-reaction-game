@@ -1,0 +1,97 @@
+# Render Configuration for Chain Reaction Game
+# This file defines how your app should be deployed on Render
+
+services:
+  # Backend API Service
+  - type: web
+    name: chain-reaction-backend
+    description: Chain Reaction Game Backend API
+    runtime: node
+    plan: free
+    repo: https://github.com/phanindra2212/chain-reaction-game.git
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: FRONTEND_URL
+        value: https://chain-reaction-frontend.onrender.com
+      - key: CORS_ORIGIN
+        value: https://chain-reaction-frontend.onrender.com
+    headers:
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: https://chain-reaction-frontend.onrender.com
+      - path: /*
+        name: Access-Control-Allow-Methods
+        value: GET, POST, OPTIONS
+      - path: /*
+        name: Access-Control-Allow-Headers
+        value: Content-Type, Authorization
+    autoDeploy: true
+    domains:
+      - chain-reaction-backend.onrender.com
+
+  # Frontend Static Site
+  - type: web
+    name: chain-reaction-frontend
+    description: Chain Reaction Game Frontend
+    runtime: static
+    plan: free
+    repo: https://github.com/phanindra2212/chain-reaction-game.git
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_SERVER_URL
+        value: https://chain-reaction-backend.onrender.com
+      - key: REACT_APP_ENVIRONMENT
+        value: production
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: X-XSS-Protection
+        value: 1; mode=block
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+    autoDeploy: true
+    pullRequestPreviewsEnabled: true
+    domains:
+      - chain-reaction-frontend.onrender.com
+
+# Optional: Add background worker for game state cleanup
+# - type: worker
+#   name: chain-reaction-cleanup
+#   runtime: node
+#   plan: free
+#   repo: https://github.com/phanindra2212/chain-reaction-game.git
+#   rootDir: backend
+#   buildCommand: npm install && npm run build
+#   startCommand: node dist/cleanup-worker.js
+#   envVars:
+#     - key: NODE_ENV
+#       value: production
+
+# Optional: Add PostgreSQL database for persistent data
+# databases:
+#   - name: chain-reaction-db
+#     plan: free
+#     databaseName: chainreaction
+#     user: chainreaction_user
+#     ipAllowList: []
+
+# Optional: Add Redis for session storage
+# - type: redis
+#   name: chain-reaction-redis
+#   plan: free
+#   ipAllowList: []

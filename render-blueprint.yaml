@@ -1,0 +1,63 @@
+# Render Blueprint Configuration
+# This file allows one-click deployment of the entire Chain Reaction Game
+
+name: Chain Reaction Game
+description: A real-time multiplayer Chain Reaction game with voice chat
+author: Chain Reaction Developer
+
+# Services to deploy
+services:
+  # Backend API Service
+  - type: web
+    name: chain-reaction-backend
+    runtime: node
+    plan: free
+    repo: https://github.com/phanindra2212/chain-reaction-game.git
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: FRONTEND_URL
+        value: https://{{ .Service.frontend.domains.[0] }}
+    autoDeploy: true
+
+  # Frontend Static Site
+  - type: web
+    name: chain-reaction-frontend
+    runtime: static
+    plan: free
+    repo: https://github.com/phanindra2212/chain-reaction-game.git
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_SERVER_URL
+        value: https://{{ .Service.backend.domains.[0] }}
+      - key: REACT_APP_ENVIRONMENT
+        value: production
+    autoDeploy: true
+    pullRequestPreviewsEnabled: true
+
+# Environment variables for all services
+globalEnvVars:
+  - key: APP_NAME
+    value: Chain Reaction Game
+  - key: APP_VERSION
+    value: 1.0.0
+
+# Custom domains (if you have them)
+# customDomains:
+#   - domain: yourdomain.com
+#     service: chain-reaction-frontend
+#   - domain: api.yourdomain.com
+#     service: chain-reaction-backend
+
+# Notification settings
+notifications:
+  email: your-email@example.com
+  slack: https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK

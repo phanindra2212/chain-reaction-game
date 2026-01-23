@@ -1,0 +1,30 @@
+# Simple Render Configuration
+# Place this file in your root directory
+
+services:
+  # Backend
+  - type: web
+    name: chain-reaction-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+    healthCheckPath: /health
+
+  # Frontend
+  - type: web
+    name: chain-reaction-frontend
+    runtime: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
+    envVars:
+      - key: REACT_APP_SERVER_URL
+        value: https://chain-reaction-backend.onrender.com
